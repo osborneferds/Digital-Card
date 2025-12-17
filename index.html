@@ -1,0 +1,1266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Osborneferds - Digital Business Card</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #7c3aed;
+            --primary-dark: #6d28d9;
+            --secondary: #4f46e5;
+            --secondary-dark: #4338ca;
+            --purple-light: #f3f0ff;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --gray-800: #1e293b;
+            --gray-900: #0f172a;
+            --white: #ffffff;
+            --whatsapp-green: #25D366;
+            --calendar-blue: #3b82f6;
+            --contacts-color: #3b82f6;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--gray-50), #e0e7ff);
+            min-height: 100vh;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: var(--gray-800);
+            line-height: 1.6;
+            padding-bottom: 2rem;
+        }
+
+        .container {
+            max-width: 520px;
+            margin: 0 auto;
+            padding: 0 1.25rem;
+        }
+
+        /* Mobile Frame - Clean white card */
+        .mobile-frame {
+            background: var(--white);
+            border-radius: 28px;
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            margin-top: 1.5rem;
+            position: relative;
+            min-height: 800px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .mobile-header {
+            background: var(--white);
+            padding: 1rem 1.25rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .mobile-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--gray-800);
+            text-align: center;
+        }
+
+        .mobile-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.5rem 1.25rem;
+            background: var(--purple-light);
+            position: relative;
+        }
+
+        /* Header Image Section */
+        .header-image {
+            width: 100%;
+            height: 180px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            position: relative;
+            overflow: hidden;
+            border-radius: 16px 16px 0 0;
+            margin-bottom: 1rem;
+        }
+
+        .profile-circle {
+            position: absolute;
+            top: 60px;
+            left: 16px;
+            width: 96px;
+            height: 96px;
+            border-radius: 50%;
+            background: var(--white);
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+            border: 3px solid var(--white);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .profile-circle:hover {
+            transform: translateY(-2px);
+            --shadow-xl: 0 25px 50px -12px rgba(0,0,0,0.25);
+        }
+
+        .profile-avatar {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            object-fit: cover;
+            display: none;
+        }
+
+        .profile-initials {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 2rem;
+            font-weight: 700;
+            background: var(--white);
+        }
+
+        .upload-overlay {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: var(--primary);
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.75rem;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            z-index: 3;
+        }
+
+        .upload-overlay:hover {
+            background: var(--primary-dark);
+            transform: scale(1.1);
+        }
+
+        #avatar-upload {
+            display: none;
+        }
+
+        /* Name and Title Section */
+        .name-section {
+            margin-top: 2rem;
+            padding-left: 16px;
+            padding-right: 16px;
+        }
+
+        .name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 0.25rem;
+        }
+
+        .title {
+            font-size: 0.875rem;
+            color: var(--gray-600);
+            font-weight: 500;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+            margin: 1.5rem 0;
+        }
+
+        @media (min-width: 480px) {
+            .action-buttons {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        .action-btn {
+            min-height: 52px;
+            padding: 0.5rem 0.25rem;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--white);
+            text-align: center;
+            font-size: 0.75rem;
+            font-weight: 500;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.25rem;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .whatsapp-btn {
+            background: linear-gradient(135deg, var(--whatsapp-green), #128C7E);
+        }
+
+        .website-btn {
+            background: linear-gradient(135deg, var(--calendar-blue), #2563eb);
+        }
+
+        .contacts-btn {
+            background: linear-gradient(135deg, var(--contacts-color), #2563eb);
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            color: var(--white);
+            text-decoration: none;
+        }
+
+        .action-btn i {
+            font-size: 1rem;
+        }
+
+        /* Contact Info Section */
+        .contact-info {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            box-shadow: var(--shadow);
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .contact-item:last-child {
+            border-bottom: none;
+        }
+
+        .contact-icon {
+            color: var(--gray-500);
+            font-size: 1rem;
+            width: 24px;
+            text-align: center;
+        }
+
+        .contact-text {
+            color: var(--gray-700);
+            flex: 1;
+            word-break: break-word;
+            font-size: 0.875rem;
+            line-height: 1.4;
+        }
+
+        .whatsapp-icon {
+            color: var(--whatsapp-green);
+        }
+
+        /* Our Services Section */
+        .services-section {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            box-shadow: var(--shadow);
+        }
+
+        .services-title {
+            font-size: 0.9375rem;
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 0.75rem;
+        }
+
+        .service-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 0.5rem;
+            background: var(--purple-light);
+            border-radius: 8px;
+            transition: var(--transition);
+        }
+
+        .service-item:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .service-icon {
+            color: var(--primary);
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .service-name {
+            font-size: 0.75rem;
+            color: var(--gray-700);
+            font-weight: 500;
+            line-height: 1.3;
+        }
+
+        /* Portfolio Section */
+        .portfolio-section {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 1.25rem 1rem;
+            margin-bottom: 1rem;
+            box-shadow: var(--shadow);
+        }
+
+        .portfolio-title {
+            font-size: 0.9375rem;
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .portfolio-buttons {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .portfolio-link {
+            flex: 1;
+            padding: 0.625rem 0.75rem;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--white);
+            text-align: center;
+            font-size: 0.75rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.25rem;
+            transition: var(--transition);
+            text-decoration: none;
+            box-shadow: var(--shadow);
+        }
+
+        .portfolio-link i {
+            font-size: 0.875rem;
+        }
+
+        .portfolio-link.view-link {
+            background: var(--gray-100);
+            color: var(--gray-700);
+        }
+
+        .portfolio-link.view-link:hover {
+            background: var(--gray-200);
+            color: var(--gray-700);
+        }
+
+        .portfolio-link:hover:not(.view-link) {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            color: var(--white);
+            text-decoration: none;
+        }
+
+        /* Service Pricing & Packages Section */
+        .pricing-section {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 1.25rem 1rem;
+            margin-bottom: 1rem;
+            box-shadow: var(--shadow);
+        }
+
+        .pricing-title {
+            font-size: 0.9375rem;
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--gray-200);
+            text-align: center;
+        }
+
+        .pricing-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .pricing-card {
+            background: var(--purple-light);
+            border-radius: 14px;
+            padding: 1.25rem;
+            border: 2px solid transparent;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary);
+        }
+
+        .pricing-card.popular {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(79, 70, 229, 0.1));
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--primary);
+            color: var(--white);
+            font-size: 0.625rem;
+            font-weight: 700;
+            padding: 0.25rem 0.5rem;
+            border-radius: 20px;
+            transform: rotate(15deg);
+        }
+
+        .pricing-header {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .pricing-name {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: var(--gray-800);
+            margin-bottom: 0.5rem;
+        }
+
+        .pricing-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .pricing-duration {
+            font-size: 0.75rem;
+            color: var(--gray-600);
+            font-weight: 500;
+        }
+
+        .pricing-features {
+            margin-bottom: 1rem;
+        }
+
+        .pricing-feature {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+            color: var(--gray-700);
+        }
+
+        .pricing-feature i {
+            color: var(--primary);
+            font-size: 0.875rem;
+        }
+
+        .pricing-btn {
+            width: 100%;
+            padding: 0.625rem;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--white);
+            font-size: 0.875rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .pricing-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* Booking Calendar Section */
+        .booking-section {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 1.25rem 1rem;
+            margin-bottom: 1rem;
+            box-shadow: var(--shadow);
+        }
+
+        .booking-title {
+            font-size: 0.9375rem;
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .booking-btn {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--calendar-blue), #2563eb);
+            color: var(--white);
+            text-align: center;
+            font-size: 0.875rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            text-decoration: none;
+        }
+
+        .booking-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            color: var(--white);
+            text-decoration: none;
+        }
+
+        .booking-btn i {
+            font-size: 1rem;
+        }
+
+        /* Google Reviews Section */
+        .reviews-section {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 1.25rem 1rem;
+            margin-bottom: 1rem;
+            box-shadow: var(--shadow);
+        }
+
+        .reviews-title {
+            font-size: 0.9375rem;
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .reviews-link {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: var(--purple-light);
+            border-radius: 12px;
+            text-decoration: none;
+            color: var(--gray-800);
+            font-weight: 500;
+            margin-bottom: 1rem;
+            transition: var(--transition);
+        }
+
+        .reviews-link:hover {
+            background: rgba(124, 58, 237, 0.15);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .review-summary {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .review-summary i {
+            font-size: 1.5rem;
+            color: #fbbf24; /* Google Reviews yellow */
+        }
+
+        .review-text {
+            font-size: 0.9375rem;
+            font-weight: 600;
+        }
+
+        .reviews-link i:last-child {
+            color: var(--gray-500);
+            font-size: 0.875rem;
+        }
+
+        .write-review-btn {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--white);
+            text-align: center;
+            font-size: 0.875rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            text-decoration: none;
+        }
+
+        .write-review-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            color: var(--white);
+            text-decoration: none;
+        }
+
+        .write-review-btn i {
+            font-size: 1rem;
+        }
+
+        /* Social Media Icons - Twitter and LinkedIn only */
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .social-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray-600);
+            font-size: 1rem;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            text-decoration: none;
+        }
+
+        .social-icon:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            color: var(--gray-600);
+            text-decoration: none;
+        }
+
+        .twitter { 
+            color: #1DA1F2; 
+        }
+        .linkedin { 
+            color: #0A66C2; 
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            color: var(--gray-500);
+            font-size: 0.75rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--gray-200);
+            font-weight: 500;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 390px) {
+            .mobile-frame {
+                min-height: 950px;
+            }
+            .profile-circle {
+                top: 50px;
+                width: 80px;
+                height: 80px;
+            }
+            .profile-avatar,
+            .profile-initials {
+                width: 74px;
+                height: 74px;
+                font-size: 1.5rem;
+            }
+            .upload-overlay {
+                width: 24px;
+                height: 24px;
+                font-size: 0.625rem;
+            }
+            .name {
+                font-size: 1.125rem;
+            }
+            .action-btn {
+                font-size: 0.65rem;
+                padding: 0.4rem 0.2rem;
+            }
+            .contact-text {
+                font-size: 0.8125rem;
+            }
+            .services-grid {
+                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            }
+            .service-name {
+                font-size: 0.7rem;
+            }
+            .portfolio-buttons {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            .social-icons {
+                gap: 2rem;
+            }
+            .pricing-name {
+                font-size: 1rem;
+            }
+            .pricing-price {
+                font-size: 1.25rem;
+            }
+        }
+
+        /* Touch feedback for mobile */
+        @media (hover: none) and (pointer: coarse) {
+            .action-btn,
+            .social-icon,
+            .service-item,
+            .portfolio-link,
+            .pricing-card,
+            .pricing-btn,
+            .booking-btn,
+            .reviews-link,
+            .write-review-btn,
+            .profile-circle {
+                transform: none !important;
+                box-shadow: var(--shadow) !important;
+            }
+            
+            .action-btn:active,
+            .social-icon:active,
+            .service-item:active,
+            .portfolio-link:active,
+            .pricing-card:active,
+            .pricing-btn:active,
+            .booking-btn:active,
+            .reviews-link:active,
+            .write-review-btn:active,
+            .profile-circle:active {
+                transform: scale(0.98) !important;
+                box-shadow: var(--shadow) !important;
+            }
+            
+            .upload-overlay:active {
+                transform: scale(0.95) !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="mobile-frame">
+            <!-- Mobile Header -->
+            <div class="mobile-header">
+                <div class="mobile-title">Freelancer - DigitalCard</div>
+            </div>
+
+            <!-- Mobile Content -->
+            <div class="mobile-content">
+                <!-- Header Image with Profile Circle -->
+                <div class="header-image">
+                    <div class="profile-circle" id="profile-container">
+                        <img id="profile-image" class="profile-avatar" src="" alt="Profile Picture">
+                        <div class="profile-initials" id="profile-initials">AJ</div>
+                        <div class="upload-overlay" title="Upload Photo">
+                            <i class="fas fa-camera"></i>
+                            <input type="file" id="avatar-upload" accept="image/*">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Name and Title -->
+                <div class="name-section">
+                    <h1 class="name">Osborne Fernandes</h1>
+                    <p class="title">Senior Developer | AI & IT Infrastructure | 20+ Years Full-Stack & Hardware
+</p>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <a href="https://osborneferds.github.io/Freelancer/" 
+                       target="_blank" 
+                       rel="noopener noreferrer"
+                       class="action-btn website-btn">
+                        <i class="fas fa-globe"></i>
+                        <span>Website</span>
+                    </a>
+                    <button class="action-btn" onclick="shareCard()">
+                        <i class="fas fa-share-alt"></i>
+                        <span>Share</span>
+                    </button>
+                    <button class="action-btn whatsapp-btn" onclick="contactWhatsApp()">
+                        <i class="fab fa-whatsapp"></i>
+                        <span>WhatsApp</span>
+                    </button>
+                    <button class="action-btn contacts-btn" onclick="downloadVCard()">
+                        <i class="fas fa-address-book"></i>
+                        <span>Add to Contacts</span>
+                    </button>
+                </div>
+
+                <!-- Contact Information -->
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div class="contact-icon"><i class="fas fa-phone"></i></div>
+                        <span class="contact-text">+63 9975849230</span>
+                        <div class="contact-icon whatsapp-icon"><i class="fab fa-whatsapp"></i></div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+                        <span class="contact-text">osbornefernds@gmail.com</span>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon"><i class="fas fa-globe"></i></div>
+                        <span class="contact-text">https://osborneferds.github.io/Freelancer/</span>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+                        <span class="contact-text">Angat, Bulacan - Philippines</span>
+                    </div>
+                </div>
+
+                <!-- Our Services Section -->
+                <div class="services-section">
+                    <div class="services-title">Our Services</div>
+                    <div class="services-grid">
+                        <div class="service-item">
+                            <div class="service-icon"><i class="fas fa-robot"></i></div>
+                            <div class="service-name">AI Chatbot</div>
+                        </div>
+                        <div class="service-item">
+                            <div class="service-icon"><i class="fas fa-mobile-alt"></i></div>
+                            <div class="service-name">Mobile App</div>
+                        </div>
+                        <div class="service-item">
+                            <div class="service-icon"><i class="fas fa-code"></i></div>
+                            <div class="service-name">Software Dev</div>
+                        </div>
+                        <div class="service-item">
+                            <div class="service-icon"><i class="fas fa-globe"></i></div>
+                            <div class="service-name">Web App</div>
+                        </div>
+                        <div class="service-item">
+                            <div class="service-icon"><i class="fas fa-brain"></i></div>
+                            <div class="service-name">AI Development</div>
+                        </div>
+                        <div class="service-item">
+                            <div class="service-icon"><i class="fas fa-palette"></i></div>
+                            <div class="service-name">Digital Design</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Portfolio Section -->
+                <div class="portfolio-section">
+                    <div class="portfolio-title">Portfolio</div>
+                    <div class="portfolio-buttons">
+                        <!-- UPDATE THESE LINKS WITH YOUR ACTUAL URLs -->
+                        <a href="https://drive.google.com/file/d/1dtaRhKo9eQMBgtAAGQc9XVpugkTS8VkP/view?usp=drive_link" 
+                           download="Osborneferds_Portfolio.pdf"
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           class="portfolio-link">
+                            <i class="fas fa-download"></i> Download PDF
+                        </a>
+                        <a href="https://drive.google.com/file/d/1dtaRhKo9eQMBgtAAGQc9XVpugkTS8VkP/view?usp=drive_link" 
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           class="portfolio-link view-link">
+                            <i class="fas fa-eye"></i> View Online
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Service Pricing & Packages Section -->
+                <div class="pricing-section">
+                    <div class="pricing-title">Service Packages</div>
+                    <div class="pricing-cards">
+                        <div class="pricing-card">
+                            <div class="pricing-header">
+                                <div class="pricing-name">Starter Package</div>
+                                <div class="pricing-price">$137</div>
+                                <div class="pricing-duration">One-time payment</div>
+                            </div>
+                            <div class="pricing-features">
+                                <div class="pricing-feature">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Your Service</span>
+                                </div>
+                                <div class="pricing-feature">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Your Porfolio</span>
+                                </div>
+                                <div class="pricing-feature">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Basic Support Included</span>
+                                </div>
+                                <div class="pricing-feature">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Basic support included</span>
+                                </div>
+                            </div>
+                            <a href="https://wa.me/971505280169?text=I%20am%20interested%20in%20this%20package"
+
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           class="pricing-btn">
+                          <i class="fab fa-whatsapp"></i> WhatsApp Now
+                           </a>
+                        </div>
+                        
+                        <div class="pricing-card popular">
+                            <div class="popular-badge">MOST POPULAR</div>
+                            <div class="pricing-header">
+                                <div class="pricing-name">Professional Package</div>
+                                <div class="pricing-price">$275</div>
+                                <div class="pricing-duration">One-time payment</div>
+                            </div>
+                            <div class="pricing-features">
+                                <div class="pricing-feature">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Your Service</span>
+                                </div>
+                                <div class="pricing-feature">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Your Portfolio</span>
+                                </div>
+                                <div class="pricing-feature">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Service Pricing & Packages</span>
+                                </div>
+                                <div class="pricing-feature">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Google Map Location</span>
+                                </div>
+                              <div class="pricing-feature">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Book A Meeting</span>
+                                </div>
+                                <div class="pricing-feature">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Analytics Integration</span>
+                                </div>
+                                <div class="pricing-feature">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>One any Custom</span>
+                                </div>
+                            </div>
+                            <a href="https://wa.me/971505280169?text=I%20am%20interested%20in%20this%20package"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          class="pricing-btn">
+                          <i class="fab fa-whatsapp"></i> WhatsApp Now
+                         </a>
+                        </div>
+                        
+                        <div class="pricing-card">
+                            <div class="pricing-header">
+                                <div class="pricing-name">Enterprise Package</div>
+                                <div class="pricing-price">Custom Pricing</div>
+                                <div class="pricing-duration">One-time payment</div>
+                            </div>
+                            <div class="pricing-features">
+                                <div class="pricing-feature">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Your Service</span>
+                                </div>
+                                <div class="pricing-feature">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Your Profolio</span>
+                                </div>
+                                <div class="pricing-feature">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Service Pricing & Packages</span>
+                                </div>
+                                <div class="pricing-feature">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Shopping Cart</span>
+                                </div>
+                                <div class="pricing-feature">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Google Maps Location</span>
+                                </div>
+                              <div class="pricing-feature">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Book A Meeting</span>
+                                </div>
+                                <div class="pricing-feature">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Performance Monitoring</span>
+                                </div>
+                                <div class="pricing-feature">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Analytics Integration</span>
+                                </div>
+                              <div class="pricing-feature">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Google Review</span>
+                                </div>
+                              <div class="pricing-feature">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Design Portfolio Gallery</span>
+                                </div>
+                              <div class="pricing-feature">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>PWA</span>
+                                </div>
+                              <div class="pricing-feature">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Custom</span>
+                                </div>
+                            </div>
+                            <a href="https://wa.me/971505280169?text=I%20am%20interested%20in%20this%20package"
+                             target="_blank"
+                             rel="noopener noreferrer"
+                             class="pricing-btn">
+                            <i class="fab fa-whatsapp"></i> WhatsApp Now
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Booking Calendar Section -->
+                <div class="booking-section">
+                    <div class="booking-title">Book a Meeting</div>
+                    <!-- UPDATE THIS LINK WITH YOUR ACTUAL GOOGLE CALENDAR APPOINTMENT LINK -->
+                    <a href="https://calendar.app.google/qCop8E4643j7VxVT9" 
+                       target="_blank" 
+                       rel="noopener noreferrer"
+                       class="booking-btn">
+                        <i class="fas fa-calendar-alt"></i> Schedule Appointment
+                    </a>
+                </div>
+
+                <!-- Google Reviews Section - YOUR ACTUAL LINK -->
+                <div class="reviews-section">
+                    <div class="reviews-title">Google Reviews</div>
+                    <a href="https://share.google/E7vM02AaJmbq260Ms" 
+                       target="_blank" 
+                       rel="noopener noreferrer"
+                       class="reviews-link">
+                        <div class="review-summary">
+                            <i class="fas fa-star"></i>
+                            <span class="review-text">View My Google Reviews</span>
+                        </div>
+                        <i class="fas fa-external-link-alt"></i>
+                    </a>
+                    <a href="https://share.google/E7vM02AaJmbq260Ms" 
+                       target="_blank" 
+                       rel="noopener noreferrer"
+                       class="write-review-btn">
+                        <i class="fas fa-pen"></i> Write a Review
+                    </a>
+                </div>
+
+                <!-- Social Media Icons - Twitter and LinkedIn -->
+                <div class="social-icons">
+                    <a href="https://twitter.com/osborneferds" class="social-icon twitter" target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/osborneferds/" class="social-icon linkedin" target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+
+                <!-- Footer -->
+                <div class="footer">
+                    <p>Osborneferds <i class="fas fa-certificate"></i> DigitalCard</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Handle profile image upload
+        document.getElementById('avatar-upload').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                // Validate file type
+                const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+                if (!allowedTypes.includes(file.type)) {
+                    alert('Please upload a valid image file (JPEG, PNG, GIF, or WebP)');
+                    return;
+                }
+                
+                // Validate file size (max 5MB)
+                if (file.size > 5 * 1024 * 1024) {
+                    alert('Image file size should be less than 5MB');
+                    return;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = document.getElementById('profile-image');
+                    const initials = document.getElementById('profile-initials');
+                    
+                    img.src = e.target.result;
+                    img.style.display = 'block';
+                    initials.style.display = 'none';
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Make the profile circle and camera icon clickable
+        document.getElementById('profile-container').addEventListener('click', function(e) {
+            // Don't trigger upload if clicking on the image itself (to allow image selection)
+            if (!e.target.classList.contains('profile-avatar')) {
+                document.getElementById('avatar-upload').click();
+            }
+        });
+
+        document.querySelector('.upload-overlay').addEventListener('click', function(e) {
+            e.stopPropagation(); // Prevent double click
+            document.getElementById('avatar-upload').click();
+        });
+
+        // Generate and download vCard
+        function downloadVCard() {
+            // vCard data with your contact information
+            const vCardData = `BEGIN:VCARD
+VERSION:3.0
+N:Fernandes;Osborne;;;
+FN:Osborne Fernandes
+TITLE:Senior Developer | AI & IT Infrastructure | 20+ Years Full-Stack & Hardware
+ORG:Freelancer
+TEL;TYPE=CELL:+639975849230
+TEL;TYPE=WA:+971505280169
+EMAIL:osbornefernds@gmail.com
+URL:https://osborneferds.github.io/Freelancer/
+ADR:;;Angat, Bulacan, Philippines;;;
+NOTE:Professional digital business card
+END:VCARD`;
+
+            
+            // Create blob and download
+            const blob = new Blob([vCardData], { type: 'text/vcard;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            
+            // Create download link
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Osborneferds_Contact.vcf';
+            document.body.appendChild(a);
+            a.click();
+            
+            // Clean up
+            setTimeout(() => {
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }, 100);
+        }
+
+        function shareCard() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Osborne Fernandes - Digital Business Card',
+                    text: 'Check out my digital business card!',
+                    url: window.location.href
+                }).catch(() => {
+                    // Fallback for browsers that don't support Web Share API
+                    copyToClipboard();
+                });
+            } else {
+                copyToClipboard();
+            }
+        }
+
+        function copyToClipboard() {
+            const url = window.location.href;
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(url).then(() => {
+                    alert('Link copied to clipboard!');
+                }).catch(() => {
+                    fallbackCopyTextToClipboard(url);
+                });
+            } else {
+                fallbackCopyTextToClipboard(url);
+            }
+        }
+
+        function fallbackCopyTextToClipboard(text) {
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            textArea.style.position = 'fixed'; // Avoid scrolling to bottom
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            try {
+                const successful = document.execCommand('copy');
+                const msg = successful ? 'Link copied to clipboard!' : 'Failed to copy link';
+                alert(msg);
+            } catch (err) {
+                alert('Failed to copy link. Please copy manually.');
+            }
+            document.body.removeChild(textArea);
+        }
+
+        function contactWhatsApp() {
+            const phoneNumber = '971505280169';
+            const message = 'Hello Osborne! I found your digital business card and would like to discuss a potential project.';
+            window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
+        }
+    </script>
+</body>
+</html>
+
